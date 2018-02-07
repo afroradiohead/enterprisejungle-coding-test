@@ -23,7 +23,7 @@
             <tr [ngClass]="{highlighted: participant.id === (selectedParticipantId$ | async)}" *ngFor="let participant of participantList">
               <td>{{participant.name}}</td>
               <td>{{participant.played}}/{{participant.won}}</td>
-              <td><button type="button" class="select-button btn btn-primary btn-sm" (click)="onClick_selectButton(participant.id)">Select</button></td>
+              <td><button [attr.test-id]="participant.id" type="button" class="select-button btn btn-primary btn-sm" (click)="onClick_selectButton(participant.id)">Select</button></td>
             </tr>
           </table>
         </div>
@@ -36,8 +36,8 @@
                 <th>bb</th>
               </tr>
               <tr>
-                <td>{{score.participant1.value}}</td>
-                <td>{{score.participant2.value}}</td>
+                <td>{{score[0].value}}</td>
+                <td>{{score[1].value}}</td>
               </tr>
             </ng-container>
           </table>
