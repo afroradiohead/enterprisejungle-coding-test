@@ -1,3 +1,7 @@
+/**
+ * Name: Christopher Clarke
+ * Date: 2018-02-07
+ */
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
