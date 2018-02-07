@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
-import {Observable} from 'rxjs/Observable';
 import {IParticipant, ParticipantService} from './services/participant.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ScorecardService} from './services/scorecard.service';
