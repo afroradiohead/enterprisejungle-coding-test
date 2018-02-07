@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Maria Coleman",
+    "played": 5,
+    "won": 2,
+    "image": "http://i.pravatar.cc/150?img=1"
+  },
+  {
+    "id": 2,
+    "name": "Michael Harris",
+    "played": 3,
+    "won": 1,
+    "image": "http://i.pravatar.cc/150?img=2"
+  },
+  {
+    "id": 3,
+    "name": "James Mitchell",
+    "played": 3,
+    "won": 3,
+    "image": "http://i.pravatar.cc/150?img=3"
+  }
+]

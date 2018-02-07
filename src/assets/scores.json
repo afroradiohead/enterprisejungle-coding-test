@@ -1,0 +1,22 @@
+[
+  {
+    "participant1": {
+      "id": 1,
+      "value": 12
+    },
+    "participant2": {
+      "id": 2,
+      "value": 43
+    }
+  },
+  {
+    "participant1": {
+      "id": 3,
+      "value": 43
+    },
+    "participant2": {
+      "id": 2,
+      "value": 12
+    }
+  }
+]

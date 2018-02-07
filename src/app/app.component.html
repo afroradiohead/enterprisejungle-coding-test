@@ -1,6 +1,6 @@
-<ng-template #participantModalTemplate let-c="close" let-d="dismiss">
+<ng-template #participantModalTemplate let-c="close">
   <div class="modal-header">
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -8,7 +8,7 @@
     <div class="row">
       <div class="col-md-4 text-center">{{modalParticipant.name}}</div>
       <div class="col-md-4 text-center">{{modalParticipant.played}}/{{modalParticipant.won}}</div>
-      <div class="col-md-4 text-center"><img src="http://i.pravatar.cc/200?img=3" class="img-fluid"></div>
+      <div class="col-md-4 text-center"><img [src]="modalParticipant.image" class="img-fluid"></div>
     </div>
   </div>
 </ng-template>
@@ -46,14 +46,14 @@
         <div class="col-md-6">
           <h2>Games</h2>
           <table class="table table-striped">
-            <ng-container *ngFor="let score of currentScoreList$ | async">
+            <ng-container *ngFor="let scoreCard of formattedScoreCardListForSelectedParticipant">
               <tr>
-                <th><div class="name-container" (click)="onClick_participantModalTrigger(score[0].id, participantModalTemplate)">{{score[0].name}}</div></th>
-                <th><div class="name-container" (click)="onClick_participantModalTrigger(score[1].id, participantModalTemplate)">{{score[1].name}}</div></th>
+                <th><div class="name-container" (click)="onClick_participantModalTrigger(scoreCard[0].id, participantModalTemplate)">{{scoreCard[0].name}}</div></th>
+                <th><div class="name-container" (click)="onClick_participantModalTrigger(scoreCard[1].id, participantModalTemplate)">{{scoreCard[1].name}}</div></th>
               </tr>
               <tr>
-                <td>{{score[0].value}}</td>
-                <td>{{score[1].value}}</td>
+                <td>{{scoreCard[0].value}}</td>
+                <td>{{scoreCard[1].value}}</td>
               </tr>
             </ng-container>
           </table>

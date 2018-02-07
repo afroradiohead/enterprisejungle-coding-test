@@ -3,6 +3,9 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {ParticipantService} from './services/participant.service';
+import {HttpClientModule} from '@angular/common/http';
+import {ScorecardService} from './services/scorecard.service';
 
 @NgModule({
   declarations: [
@@ -10,9 +13,10 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
   ],
   imports: [
     BrowserModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    HttpClientModule
   ],
-  providers: [],
+  providers: [ParticipantService, ScorecardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

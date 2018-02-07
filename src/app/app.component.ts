@@ -2,37 +2,16 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import {Observable} from 'rxjs/Observable';
-import {IParticipant} from '../interfaces/Participant';
-import {IScore} from '../interfaces/Score';
-import {IScoreFormatted} from '../interfaces/ScoreFormatted';
+import {IParticipant, ParticipantService} from './services/participant.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ScorecardService} from './services/scorecard.service';
+import {combineLatest} from 'rxjs/observable/combineLatest';
+import {IScore} from '../interfaces/Score';
+import 'rxjs/add/operator/do';
 
-
-export const PARTICIPANT_LIST: IParticipant[] = [
-  {id: 1, name: 'Maria Coleman', played: 5, won: 2 },
-  {id: 2, name: 'Michael Harris', played: 3, won: 1 },
-  {id: 3, name: 'James Mitchell', played: 3, won: 3 }
-];
-
-export const SCORE_LIST: {participant1: IScore, participant2: IScore}[] = [{
-  participant1: {
-    id: 1,
-    value: 12,
-  },
-  participant2: {
-    id: 2,
-    value: 43
-  }
-}, {
-  participant1: {
-    id: 3,
-    value: 43,
-  },
-  participant2: {
-    id: 2,
-    value: 12
-  }
-}];
+export interface IFormattedScoreCard extends IScore {
+  name: string;
+}
 
 @Component({
   selector: 'app-root',
@@ -40,34 +19,39 @@ export const SCORE_LIST: {participant1: IScore, participant2: IScore}[] = [{
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  participantList = PARTICIPANT_LIST;
-  scoreList = SCORE_LIST;
-  selectedParticipantId$: Subject<number> = new Subject<number>();
-  modalParticipant: IParticipant | undefined;
-  currentScoreList$: Observable<IScoreFormatted[][]>;
+  participantList: IParticipant[] = [];
+  modalParticipant: IParticipant;
+  formattedScoreCardListForSelectedParticipant: IFormattedScoreCard[][] = [];
   @ViewChild('#participantModal') participantModalEl;
 
-  constructor(private modalService: NgbModal) {}
+  selectedParticipantId$: Subject<number> = new Subject<number>();
+
+  constructor(private modalService: NgbModal, private participantService: ParticipantService, private scoreCardService: ScorecardService) {}
 
   ngOnInit() {
-     this.currentScoreList$ =
-       this.selectedParticipantId$
-         .map(participantId => {
-           return this.scoreList
-             .filter(score => score.participant1.id === participantId || score.participant2.id === participantId)
-             .map(function(score) {
-               const useP1AsFirstColumn = score.participant1.value > score.participant2.value;
-               const p1Obj: IScoreFormatted = {...score.participant1, name: PARTICIPANT_LIST.find(participant => participant.id === score.participant1.id).name};
-               const p2Obj: IScoreFormatted = {...score.participant2, name: PARTICIPANT_LIST.find(participant => participant.id === score.participant2.id).name};
-               return [
-                 useP1AsFirstColumn ? p1Obj : p2Obj,
-                 useP1AsFirstColumn ? p2Obj : p1Obj,
-               ];
-             });
-         });
+    const scoreCardList$ = this.scoreCardService.get();
+    const participantList$ = this.participantService.get();
 
-     console.log(this.participantModalEl);
-    // this.modalService.open('dafadaf');
+    combineLatest(this.selectedParticipantId$, scoreCardList$, participantList$)
+      .map(([selectedParticipantId, scoreCardList, participantList]) => {
+        return scoreCardList
+          .filter(scoreCard => scoreCard.participant1.id === selectedParticipantId || scoreCard.participant2.id === selectedParticipantId)
+          .map(function(score) {
+            const useP1AsFirstColumn = score.participant1.value > score.participant2.value;
+            const p1Obj: IFormattedScoreCard = {...score.participant1, name: participantList.find(({id}) => id === score.participant1.id).name};
+            const p2Obj: IFormattedScoreCard = {...score.participant2, name: participantList.find(({id}) => id === score.participant2.id).name};
+            return [
+              useP1AsFirstColumn ? p1Obj : p2Obj,
+              useP1AsFirstColumn ? p2Obj : p1Obj,
+            ];
+          });
+      })
+      .do(v => this.formattedScoreCardListForSelectedParticipant = v)
+      .subscribe();
+
+    participantList$
+      .do(v => this.participantList = v)
+      .subscribe();
   }
 
   onClick_selectButton(participantId) {
@@ -75,8 +59,7 @@ export class AppComponent implements OnInit {
   }
 
   onClick_participantModalTrigger(participantId, template) {
-    this.modalParticipant = PARTICIPANT_LIST.find(p => p.id === participantId);
-
+    this.modalParticipant = this.participantList.find(({id}) => id === participantId);
     this.modalService.open(template);
   }
 }
