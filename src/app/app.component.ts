@@ -1,10 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import {Observable} from 'rxjs/Observable';
 import {IParticipant} from '../interfaces/Participant';
 import {IScore} from '../interfaces/Score';
 import {IScoreFormatted} from '../interfaces/ScoreFormatted';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+
 
 export const PARTICIPANT_LIST: IParticipant[] = [
   {id: 1, name: 'Maria Coleman', played: 5, won: 2 },
@@ -39,11 +41,13 @@ export const SCORE_LIST: {participant1: IScore, participant2: IScore}[] = [{
 })
 export class AppComponent implements OnInit {
   participantList = PARTICIPANT_LIST;
-
   scoreList = SCORE_LIST;
-
   selectedParticipantId$: Subject<number> = new Subject<number>();
+  modalParticipant: IParticipant | undefined;
   currentScoreList$: Observable<IScoreFormatted[][]>;
+  @ViewChild('#participantModal') participantModalEl;
+
+  constructor(private modalService: NgbModal) {}
 
   ngOnInit() {
      this.currentScoreList$ =
@@ -61,10 +65,18 @@ export class AppComponent implements OnInit {
                ];
              });
          });
+
+     console.log(this.participantModalEl);
+    // this.modalService.open('dafadaf');
   }
 
   onClick_selectButton(participantId) {
     this.selectedParticipantId$.next(participantId);
   }
 
+  onClick_participantModalTrigger(participantId, template) {
+    this.modalParticipant = PARTICIPANT_LIST.find(p => p.id === participantId);
+
+    this.modalService.open(template);
+  }
 }

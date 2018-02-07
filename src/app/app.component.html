@@ -1,3 +1,19 @@
+<ng-template #participantModalTemplate let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-4 text-center">{{modalParticipant.name}}</div>
+      <div class="col-md-4 text-center">{{modalParticipant.played}}/{{modalParticipant.won}}</div>
+      <div class="col-md-4 text-center"><img src="http://i.pravatar.cc/200?img=3" class="img-fluid"></div>
+    </div>
+  </div>
+</ng-template>
+
+
 <header>
   <div class="navbar navbar-dark bg-dark box-shadow">
     <div class="container d-flex justify-content-between">
@@ -21,9 +37,9 @@
               <th>&nbsp;</th>
             </tr>
             <tr [ngClass]="{highlighted: participant.id === (selectedParticipantId$ | async)}" *ngFor="let participant of participantList">
-              <td>{{participant.name}}</td>
+              <td><div class="name-container" (click)="onClick_participantModalTrigger(participant.id, participantModalTemplate)">{{participant.name}}</div></td>
               <td>{{participant.played}}/{{participant.won}}</td>
-              <td><button [attr.test-id]="participant.id" type="button" class="select-button btn btn-primary btn-sm" (click)="onClick_selectButton(participant.id)">Select</button></td>
+              <td><button [attr.test-select-button]="participant.id" type="button" class="btn btn-primary btn-sm" (click)="onClick_selectButton(participant.id)">Select</button></td>
             </tr>
           </table>
         </div>
@@ -32,8 +48,8 @@
           <table class="table table-striped">
             <ng-container *ngFor="let score of currentScoreList$ | async">
               <tr>
-                <th>aa</th>
-                <th>bb</th>
+                <th><div class="name-container" (click)="onClick_participantModalTrigger(score[0].id, participantModalTemplate)">{{score[0].name}}</div></th>
+                <th><div class="name-container" (click)="onClick_participantModalTrigger(score[1].id, participantModalTemplate)">{{score[1].name}}</div></th>
               </tr>
               <tr>
                 <td>{{score[0].value}}</td>
@@ -48,12 +64,3 @@
 </main>
 
 
-<footer class="text-muted">
-  <div class="container">
-    <p class="float-right">
-      <a href="#">Back to top</a>
-    </p>
-    <p>Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-    <p>New to Bootstrap? <a href="../../">Visit the homepage</a> or read our <a href="../../getting-started/">getting started guide</a>.</p>
-  </div>
-</footer>

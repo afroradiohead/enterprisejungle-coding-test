@@ -18,10 +18,12 @@ describe('AppComponent', () => {
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   }));
-  it('should change the selectedParticipantId when clicking the select button', async(() => {
+  it('should update selectedParticipantId when clicking the select button', (done) => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     const testParticipantId = PARTICIPANT_LIST[0].id;
+
+    console.log(done);
 
     fixture.whenStable().then(_ => {
       fixture.detectChanges();
@@ -29,17 +31,18 @@ describe('AppComponent', () => {
       expect(app.selectedParticipantId$).toEqual(jasmine.any(Subject));
       app.selectedParticipantId$.subscribe(participantId => {
         expect(participantId).toEqual(testParticipantId);
+        done();
       });
 
       app.onClick_selectButton(testParticipantId);
     });
-  }));
+  });
 
-
-  it(`should change the Score Card when clicking the select button`, async(() => {
+  it(`should update currentScoreList$ when clicking the select button`, done => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     const testParticipantId = PARTICIPANT_LIST[0].id;
+
 
     fixture.whenStable().then(_ => {
       fixture.detectChanges();
@@ -58,9 +61,15 @@ describe('AppComponent', () => {
       expect(app.currentScoreList$).toEqual(jasmine.any(Observable));
       app.currentScoreList$.subscribe(currentScoreList => {
         expect(currentScoreList).toEqual(expectedCurrentScoreList);
+
+        done();
       });
 
       app.onClick_selectButton(testParticipantId);
     });
-  }));
+  });
+
+
+
+
 });

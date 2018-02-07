@@ -3,3 +3,11 @@
     background-color: green;
   }
 }
+
+
+.name-container {
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
