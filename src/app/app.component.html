@@ -8,7 +8,7 @@
     <div class="row">
       <div class="col-md-4 text-center">{{modalParticipant.name}}</div>
       <div class="col-md-4 text-center">{{modalParticipant.played}}/{{modalParticipant.won}}</div>
-      <div class="col-md-4 text-center"><img [src]="modalParticipant.image" class="img-fluid"></div>
+      <div class="col-md-4 text-center"><img src="http://i.pravatar.cc/200?img={{modalParticipant.id}}" class="img-fluid"></div>
     </div>
   </div>
 </ng-template>
@@ -44,7 +44,7 @@
           </table>
         </div>
         <div class="col-md-6">
-          <h2>Games</h2>
+          <h2>Score Card</h2>
           <table class="table table-striped">
             <ng-container *ngFor="let scoreCard of formattedScoreCardListForSelectedParticipant">
               <tr>

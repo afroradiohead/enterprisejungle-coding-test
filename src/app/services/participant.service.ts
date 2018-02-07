@@ -7,7 +7,6 @@ export interface IParticipant {
   name: string;
   played: Number;
   won: Number;
-  image: string;
 }
 
 @Injectable()
