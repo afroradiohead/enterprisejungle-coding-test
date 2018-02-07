@@ -5,11 +5,12 @@ import {IParticipant, ParticipantService} from './services/participant.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ScorecardService} from './services/scorecard.service';
 import {combineLatest} from 'rxjs/observable/combineLatest';
-import {IScore} from '../interfaces/Score';
 import 'rxjs/add/operator/do';
 
-export interface IFormattedScoreCard extends IScore {
+export interface IFormattedScoreCard {
+  id: Number;
   name: string;
+  value: Number;
 }
 
 @Component({

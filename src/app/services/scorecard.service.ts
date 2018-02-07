@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
-import {IScore} from '../../interfaces/Score';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 
 export interface IScoreCard {
-  participant1: IScore;
-  participant2: IScore;
+  participant1: {
+    id: number;
+    value: number;
+  };
+  participant2: {
+    id: number;
+    value: number;
+  };
 }
 
 @Injectable()
